@@ -30,7 +30,6 @@ export const useAuthStore = defineStore('auth', () => {
         }
       }
     
-    // Роль пользователя
     const userRole = computed(() => {
         return currentUser.value?.role || 'student'
     })
@@ -63,30 +62,25 @@ export const useAuthStore = defineStore('auth', () => {
         }
       }
     
-    const register = async (userData) => {
+    const register = async (name, email, password) => {
         try {
-            const response = await fetch(API_URL + '/auth/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(userData)
-            })
-            
-            if (response.ok) {
-                const data = await response.json()
-                
-                localStorage.setItem('token', data.token)
-                currentUser.value = data.user
-                isAuthenticated.value = true
-                
-                return { success: true }
-            } else {
-                const error = await response.json()
-                return { success: false, error: error.message || 'Ошибка регистрации' }
-            }
+          const response = await fetch(API_URL + '/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ name, email, password })
+          })
+    
+          if (response.ok) {
+            await login(email, password)
+            return { success: true }
+          } else {
+            const error = await response.json()
+            return { success: false, error: error.error || 'Ошибка регистрации' }
+          }
         } catch (error) {
-            return { success: false, error: 'Ошибка сети' }
+          console.error('register error:', error)
+          return { success: false, error: 'Ошибка сети' }
         }
     }
     

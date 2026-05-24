@@ -1,8 +1,14 @@
 <template>
     <div class="container mt-4">
         <h2>Редактировать профиль</h2>
-        
         <div class="card p-4">
+            <div class="mb-3">
+                <input type="file" class="form-control" @change="onFileChange" accept="image/*">
+                <img v-if="form.avatar" :src="form.avatar" width="100" height="100" style="border-radius: 50%;">
+                <div v-else style="width: 100px; height: 100px; background: gray; border-radius: 50%; display: inline-block; line-height: 100px;">
+                </div>
+            </div>
+
             <div class="mb-3">
                 <label class="form-label">Имя</label>
                 <input class="form-control" v-model="form.name">
@@ -21,11 +27,6 @@
                 </select>
             </div>
             
-            <div class="mb-3">
-                <label class="form-label">Новый пароль</label>
-                <input type="password" class="form-control" v-model="form.password" placeholder="Оставьте пустым, чтобы не менять">
-            </div>
-            
             <button class="btn btn-primary" @click="save">Сохранить</button>
             <button class="btn btn-secondary ms-2" @click="cancel">Отмена</button>
         </div>
@@ -41,7 +42,7 @@ import ApiService from '../js/api_service'
 const router = useRouter()
 const authStore = useAuthStore()
 const groups = ref([])
-const form = ref({ name: '', email: '', group: null, password: '' })
+const form = ref({ name: '', email: '', group: null, avatar: '' })
 
 onMounted(async () => {
     groups.value = await ApiService.loadGroups()
@@ -52,16 +53,32 @@ onMounted(async () => {
             name: student.name,
             email: student.email,
             group: student.group?.id || null,
-            password: ''
+            avatar: student.avatar || ''
         }
     }
 })
+
+const triggerUpload = () => {
+    fileInput.value.click()
+}
+
+const onFileChange = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    
+    const reader = new FileReader()
+    reader.onload = (event) => {
+        form.value.avatar = event.target.result
+    }
+    reader.readAsDataURL(file)
+}
 
 const save = async () => {
     const updateData = {
         name: form.value.name,
         email: form.value.email,
-        group: form.value.group ? { id: form.value.group } : null 
+        group: form.value.group ? { id: form.value.group } : null,
+        avatar: form.value.avatar
     }
     
     if (form.value.password) {
@@ -72,6 +89,7 @@ const save = async () => {
     
     authStore.currentUser.name = form.value.name
     authStore.currentUser.email = form.value.email
+    authStore.currentUser.avatar = form.value.avatar
     
     router.push('/profile')
 }

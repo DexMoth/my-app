@@ -16,9 +16,10 @@
         <router-link to="/profile" class="btn btn-sm btn-outline-light me-1">{{ authStore.currentUser?.name || 'Пользователь' }}</router-link>
         <button @click="logout" class="btn btn-sm btn-outline-light">Выйти</button>
       </div>
-      
+
       <div v-else>
         <router-link to="/login" class="btn btn-sm btn-outline-light">Войти</router-link>
+        <router-link to="/register" class="btn btn-sm btn-outline-light">Зарегистрироваться</router-link>
       </div>
     </div>
   </nav>
