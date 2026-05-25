@@ -23,6 +23,7 @@
             <p><strong>Имя:</strong> {{ fullStudent.name }}</p>
             <p><strong>Email:</strong> {{ fullStudent.email }}</p>
             <p><strong>Группа:</strong> {{ fullStudent.group?.name || 'Не назначена' }}</p>
+            <p v-if="authStore.isAdmin">Роль: администратор</p>
         </div>
         
         <div v-else>Загрузка...</div>

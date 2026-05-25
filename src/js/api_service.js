@@ -65,6 +65,22 @@ async loadGroup(id) {
     }
 },
 
+async createGroup(data) {
+    const resp = await fetch(`${this.API_URL}/group`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    })
+    return resp.json()
+},
+
+async deleteGroup(id) {
+    const resp = await fetch(`${this.API_URL}/group/${id}`, {
+        method: 'DELETE'
+    })
+    return resp.ok
+},
+
 async loadClub(id) {
     try {
         const resp = await fetch(this.API_URL + '/club' + id)
@@ -83,6 +99,27 @@ async loadClubs() {
         console.error('Ошибка загрузки клубов', err);
     }
 },
+
+async getStudentClubs(studentId) {
+    const resp = await fetch(`${this.API_URL}/student/${studentId}/clubs`)
+    return resp.json()
+},
+
+async addStudentToClub(studentId, clubId) {
+    const resp = await fetch(`${this.API_URL}/club/${clubId}/students/${studentId}`,
+    {
+        method: 'POST'
+    })
+    return resp.ok
+},
+
+async removeStudentFromClub(studentId, clubId) {
+    const resp = await fetch(`${this.API_URL}/club/${clubId}/students/${studentId}`, {
+        method: 'DELETE'
+    })
+    return resp.ok
+}
+
 }
 export default ApiService
 

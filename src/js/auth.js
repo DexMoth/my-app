@@ -35,8 +35,8 @@ export const useAuthStore = defineStore('auth', () => {
     })
     
     const isAdmin = computed(() => {
-        return userRole.value === 'admin'
-    })
+      return currentUser.value?.isAdmin === true
+  })
     
     const login = async (email, password) => {
         try {

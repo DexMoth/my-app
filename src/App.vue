@@ -8,8 +8,9 @@
       </router-link>
       
       <div class="ms-auto me-3">
-        <router-link to="/students" class="btn btn-outline-light me-2">Студенты</router-link>
+        <router-link to="/" class="btn btn-outline-light me-2">Студенты</router-link>
         <router-link to="/groups" class="btn btn-outline-light me-2">Группы</router-link>
+        <router-link to="/clubs" class="btn btn-outline-light me-2">Клубы</router-link>
       </div>
 
       <div v-if="authStore.isAuthenticated" class="ms-auto">

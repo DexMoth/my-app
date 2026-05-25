@@ -4,6 +4,8 @@ import ProfilePage from '@/pages/ProfilePage.vue'
 import EditProfile from '@/pages/EditProfile.vue'
 import MainPage from '@/pages/MainPage.vue'
 import EditStudent from '@/pages/EditStudent.vue'
+import Groups from '@/pages/Groups.vue'
+import Clubs from '@/pages/Clubs.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/js/auth'
 
@@ -48,6 +50,18 @@ const routes = [
       path: '/students/:id/edit',
       name: 'EditStudent',
       component: EditStudent,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/groups',
+      name: 'Groups',
+      component: Groups,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/clubs',
+      name: 'Clubs',
+      component: Clubs,
       meta: { requiresAuth: true }
     },
 ]
